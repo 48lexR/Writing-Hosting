@@ -3,8 +3,8 @@ services:
     build: ./api
     env_file: .env
     container_name: "api"
-    expose: 
-      - 8000
+    ports: 
+      - 8000:8000
     networks:
       - testing
 
@@ -24,7 +24,7 @@ services:
     container_name: "minio"
     env_file: .env
     volumes:
-      minio:/data
+      - minio:/data
     command: server /data --console-address ":9001"
     networks:
       - testing
@@ -32,11 +32,11 @@ services:
   redis:
     image: redis:latest
     container_name: "redis"
-    expose:
-      - $REDIS_PORT
+    ports:
+      - $REDIS_PORT:$REDIS_PORT
     volumes:
       - redis:/data
-      - redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
     networks:
       - testing
